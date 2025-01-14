@@ -1,3 +1,10 @@
 Enter VENV: 
 bash - source env/Scripts/activate
 windows - ./env/Scripts/activate
+
+run backend w/ fastapi:
+fastapi dev
+
+run frontend w/ npm:
+npm run dev
+
