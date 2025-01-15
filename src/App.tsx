@@ -1,30 +1,11 @@
 import React, { useState } from "react";
+import "./App.css";
+import FixedBottomNavigation from "./components/test";
 
 const App: React.FC = () => {
   const [url, setUrl] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState(false);
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:8000/summarize", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ url }),
-  //     });
-  //     console.log(response);
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setSummary(data.summary);
-  //   } catch (error) {
-  //     console.error("Error fetching summary:", error);
-  //     setSummary("An error occurred.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +35,7 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-      <h1>Website Summarizer</h1>
+      <h1>TLDR</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -65,6 +46,7 @@ const App: React.FC = () => {
         />
         <button type="submit">Summarize</button>
       </form>
+      <FixedBottomNavigation />
       {loading && <p>Loading...</p>}
       {summary && <div className="summary">{summary}</div>}
     </div>
