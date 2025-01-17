@@ -49,9 +49,9 @@ class Item(BaseModel):
     price: float
     tax: float | None = None
 
-class URLRequest(BaseModel):
-    url: str
-    length: int = 5
+class Request(BaseModel):
+    input: str
+    type: int = 0
 
 
 app.add_middleware(
@@ -64,33 +64,40 @@ app.add_middleware(
 
 
 @app.post("/summary/")
-async def summarize(request:URLRequest):
-    header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'}
+async def summarize(request:Request):
 
-    response = requests.get(request.url, timeout=10, headers=header)
-    print(response)
+    if request.type == 0:
+        header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'}
 
-    html = response.text
+        response = requests.get(request.input, timeout=10, headers=header)
+        print(response)
+
+        html = response.text
+
+        soup = BeautifulSoup(html, "lxml")
+        for a in soup.find_all("a", href=True):
+            a.extract()
+
+        def clean_text(text):
+            cleantext = re.sub(r"[\r\n\t]", " ", text)
+            cleantext = re.sub(r"[^\x00-\x7F]+", " ", cleantext)  # Remove non-ASCII characters
+            return  re.sub(r"\s+", " ", cleantext).strip() 
+        
+        text = clean_text(soup.text)
+
+    elif request.type == 1:
+        text = request.input
+
+
     summarizer = pipeline(task='summarization', model="sshleifer/distilbart-cnn-12-6")
-
-    soup = BeautifulSoup(html, "lxml")
-    for a in soup.find_all("a", href=True):
-        a.extract()
-
-    def clean_text(text):
-        cleantext = re.sub(r"[\r\n\t]", " ", text)
-        cleantext = re.sub(r"[^\x00-\x7F]+", " ", cleantext)  # Remove non-ASCII characters
-        return  re.sub(r"\s+", " ", cleantext).strip() 
-    
-    cleaned_text = clean_text(soup.text)
     l = 0
     r = 0
     summary = ""
-    while r < len(cleaned_text):
+    while r < len(text):
         r+=3600
-        res = summarizer(cleaned_text[l:r], max_length=130,min_length=30,do_sample=False)
+        res = summarizer(text[l:r], max_length=130,min_length=30,do_sample=False)
         summary += res[0]['summary_text']
         l = r
-    
+        
     return {"summary": summary}
 

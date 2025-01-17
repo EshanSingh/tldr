@@ -4,95 +4,109 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper/Paper";
 import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ArchiveIcon from "@mui/icons-material/Archive";
-// import { IonActionSheet, IonButton } from "@ionic/react";
+import LinkIcon from "@mui/icons-material/Link";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { Fab } from "@mui/material";
+import { FaCode } from "react-icons/fa6";
 
-// function Example() {
-//   return (
-//     <>
-//       <IonButton id="open-action-sheet">Open</IonButton>
-//       <IonActionSheet
-//         trigger="open-action-sheet"
-//         header="Actions"
-//         buttons={[
-//           {
-//             text: "Delete",
-//             role: "destructive",
-//             data: {
-//               action: "delete",
-//             },
-//           },
-//           {
-//             text: "Share",
-//             data: {
-//               action: "share",
-//             },
-//           },
-//           {
-//             text: "Cancel",
-//             role: "cancel",
-//             data: {
-//               action: "cancel",
-//             },
-//           },
-//         ]}
-//       ></IonActionSheet>
-//     </>
-//   );
-// }
-// export default Example;
-// import * as React from "react";
-// import Box from "@mui/material/Box";
-// import BottomNavigation from "@mui/material/BottomNavigation";
-// import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-// import RestoreIcon from "@mui/icons-material/Restore";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
-// import LocationOnIcon from "@mui/icons-material/LocationOn";
+interface Props {
+  mode: boolean;
+  setMode: React.Dispatch<React.SetStateAction<boolean>>;
+  type: number;
+  setType: React.Dispatch<React.SetStateAction<number>>;
+}
 
-// export default function SimpleBottomNavigation() {
-//   const [value, setValue] = React.useState(0);
-
-//   return (
-//     <Box sx={{ width: 500 }}>
-//       <BottomNavigation
-//         showLabels
-//         value={value}
-//         onChange={(event, newValue) => {
-//           setValue(newValue);
-//         }}
-//       >
-//         <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-//         <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-//         <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-//       </BottomNavigation>
-//     </Box>
-//   );
-// }
-
-export default function FixedBottomNavigation() {
-  const [value, setValue] = React.useState(0);
+export default function FixedBottomNavigation({
+  mode,
+  setMode,
+  type,
+  setType,
+}: Props) {
   const ref = React.useRef<HTMLDivElement>(null);
+
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline />
       <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-        elevation={3}
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "space-between", // Distributes space between children
+          alignItems: "center", // Centers items vertically
+          px: 2, // Adds horizontal padding
+        }}
+        elevation={0}
       >
-        <BottomNavigation
-          showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-            console.log(newValue);
+        <Fab
+          variant="extended"
+          color="primary"
+          sx={{
+            ml: 2,
+            backgroundColor: "transparent",
+            boxShadow: "none", // Remove shadow
+            color: "inherit", // Inherit text color
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)", // Optional: Add slight hover effect
+            },
           }}
         >
-          <BottomNavigationAction label="URL" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Text" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Youtube" icon={<ArchiveIcon />} />
+          <FaCode /> Eshan
+        </Fab>
+        <BottomNavigation
+          showLabels
+          value={type}
+          onChange={(event, newType) => {
+            setType(newType);
+          }}
+          sx={{ flex: 1 }} // Makes it occupy available space
+        >
+          <BottomNavigationAction label="URL" icon={<LinkIcon />} />
+          <BottomNavigationAction label="Text" icon={<TextFieldsIcon />} />
+          <BottomNavigationAction label="Youtube" icon={<YouTubeIcon />} />
         </BottomNavigation>
+        {mode ? (
+          <Fab
+            variant="extended"
+            color="primary"
+            onClick={() => setMode(!mode)}
+            sx={{
+              ml: 2,
+              backgroundColor: "transparent",
+              boxShadow: "none", // Remove shadow
+              color: "inherit", // Inherit text color
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.04)", // Optional: Add slight hover effect
+              },
+            }}
+          >
+            <LightModeIcon sx={{ mr: 1 }} />
+            Light Mode
+          </Fab>
+        ) : (
+          <Fab
+            variant="extended"
+            color="primary"
+            onClick={() => setMode(!mode)}
+            sx={{
+              ml: 2,
+              backgroundColor: "transparent",
+              boxShadow: "none", // Remove shadow
+              color: "inherit", // Inherit text color
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.04)", // Optional: Add slight hover effect
+              },
+            }}
+          >
+            <DarkModeIcon sx={{ mr: 1 }} />
+            Dark Mode
+          </Fab>
+        )}
       </Paper>
     </Box>
   );
