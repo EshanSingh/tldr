@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -65,3 +66,7 @@ async def summarize(request:Request):
         
     return {"summary": summary}
 
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))  # Use PORT environment variable or default to 8000
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
