@@ -1,9 +1,7 @@
-- Implement bottom menu to navigate to multiple pages (URL, Text, Video?)
-- Make page look pretty
-- implement backend summarization for Text (And Video?)
+- Make page look pretty (add swiping animation)
+- implement backend summarization for Video?
 - Implement popup that displays error message for bad inputs (use modal)
 
 
 Maybe
-- Figure out Ionic
 - 

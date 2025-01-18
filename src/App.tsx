@@ -3,7 +3,7 @@ import "./App.css";
 import FixedBottomNavigation from "./components/test";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, Slide } from "@mui/material";
 
 const App: React.FC = () => {
   const [url, setUrl] = useState<string>("");
@@ -15,6 +15,11 @@ const App: React.FC = () => {
   const theme = createTheme({
     palette: {
       mode: mode ? "dark" : "light",
+    },
+    transitions: {
+      easing: {
+        easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+      },
     },
   });
 
@@ -51,31 +56,69 @@ const App: React.FC = () => {
         <h1>TLDR</h1>
         <form onSubmit={handleSubmit}>
           {type == 0 ? (
-            <TextField
-              id="outlined-basic"
-              label="Enter a URL"
-              variant="standard"
-              placeholder="Enter website URL"
-              onChange={(e) => setUrl(e.target.value)}
-              sx={{
-                width: "30vh",
-              }}
-            />
+            <Slide direction="left" in={type == 0} mountOnEnter unmountOnExit>
+              <TextField
+                id="outlined-basic"
+                label="Enter a URL"
+                variant="standard"
+                placeholder="Enter website URL"
+                onChange={(e) => setUrl(e.target.value)}
+                sx={{
+                  width: "30vh",
+                }}
+              />
+            </Slide>
           ) : type == 1 ? (
-            <TextField
-              id="standard-textarea"
-              label="Enter some Text"
-              placeholder="Text"
-              multiline
-              variant="standard"
-              onChange={(e) => setUrl(e.target.value)}
-              sx={{
-                width: "50vw",
-              }}
-            />
+            <Slide direction="left" in={type == 1} mountOnEnter unmountOnExit>
+              <TextField
+                id="standard-textarea"
+                label="Enter some Text"
+                placeholder="Text"
+                multiline
+                variant="standard"
+                onChange={(e) => setUrl(e.target.value)}
+                sx={{
+                  width: "50vw",
+                }}
+              />
+            </Slide>
           ) : (
             <p>Youtube coming soon</p>
           )}
+          {/* <div className="form-container">
+            {type == 0 ? (
+              <div
+                className={`textbox ${type === 0 ? "slide-in" : "slide-out"}`}
+              >
+                <TextField
+                  id="outlined-basic"
+                  label="Enter a URL"
+                  variant="standard"
+                  placeholder="Enter website URL"
+                  onChange={(e) => setUrl(e.target.value)}
+                  sx={{
+                    width: "30vh",
+                  }}
+                />
+              </div>
+            ) : (
+              <div
+                className={`textbox ${type === 1 ? "slide-in" : "slide-out"}`}
+              >
+                <TextField
+                  id="standard-textarea"
+                  label="Enter some Text"
+                  placeholder="Text"
+                  multiline
+                  variant="standard"
+                  onChange={(e) => setUrl(e.target.value)}
+                  sx={{
+                    width: "50vw",
+                  }}
+                />
+              </div>
+            )}
+          </div> */}
           <Button
             loading={loading}
             type="submit"

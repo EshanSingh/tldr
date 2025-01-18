@@ -55,6 +55,8 @@ export default function FixedBottomNavigation({
               backgroundColor: "rgba(0, 0, 0, 0.04)", // Optional: Add slight hover effect
             },
           }}
+          href="https://eshan-site.vercel.app/"
+          target="_blank"
         >
           <FaCode /> Eshan
         </Fab>
