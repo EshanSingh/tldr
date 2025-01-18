@@ -44,7 +44,7 @@ const App: React.FC = () => {
       setSummary(data.summary);
     } catch (error) {
       console.error("Error fetching summary:", error);
-      setSummary(`Error: ${error.message}`); //("Error: Enter a Valid URL or try the Text version");
+      setSummary("Error: Enter a Valid URL or try the Text version"); // (`Error: ${error.message}`);
     } finally {
       setLoading(false);
     }

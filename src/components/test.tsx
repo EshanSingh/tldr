@@ -63,7 +63,7 @@ export default function FixedBottomNavigation({
         <BottomNavigation
           showLabels
           value={type}
-          onChange={(event, newType) => {
+          onChange={(_, newType) => {
             setType(newType);
           }}
           sx={{ flex: 1 }} // Makes it occupy available space

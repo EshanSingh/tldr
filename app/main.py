@@ -21,7 +21,7 @@ class Request(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React frontend origin (adjust if needed)
+    allow_origins=["http://localhost:5173","https://eshan-tldr.vercel.app/"],  # React frontend origin (adjust if needed)
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
