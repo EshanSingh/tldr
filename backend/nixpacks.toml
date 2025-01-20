@@ -1,6 +1,6 @@
 [phases.setup]
-aptPkgs = ["python3-pip"]  # Ensures pip is installed
-cmds = ["python3 -m pip install --upgrade pip", "python3 -m pip install -r requirements.txt"]
+aptPkgs = ["python3", "python3-pip"]
+cmds = ["python3 -m pip install -r requirements.txt"]
 
 [phases.start]
 cmd = "uvicorn main:app --host 0.0.0.0 --port ${PORT}"
