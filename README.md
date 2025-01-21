@@ -29,7 +29,7 @@ Hosted on:
 
 - Vercel
 
-The backend scrapes the designated website and gathers the text, chunks the text into smaller contexts to enable faster load-times and generate more accurate summaries
+The backend scrapes the designated website and gathers the text, chunks the text into smaller contexts to enable faster load-times and generate more accurate summaries. Leverages a machine learning [summarization model](https://huggingface.co/facebook/bart-large-cnn) for summarizing
 
 Built with:
 
@@ -41,3 +41,5 @@ Built with:
 Hosted on:
 
 - Railways
+
+Happy Summarizing!
