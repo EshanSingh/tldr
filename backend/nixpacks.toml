@@ -1,9 +1,13 @@
 [phases.setup]
-nixPkgs = ["python311", "gcc", "python311Packages.pip"]
-cmds = ["pip install --no-cache-dir -r requirements.txt"]
+nixPkgs = ["python311", "gcc", "python311Packages.virtualenv"]
+cmds = [
+  "python3 -m venv /app/venv",
+  ". /app/venv/bin/activate",
+  "pip install --no-cache-dir -r requirements.txt"
+]
 
 [phases.build]
 cmds = []
 
 [start]
-cmd = "python3 main.py"
+cmd = ". /app/venv/bin/activate && python3 main.py"
