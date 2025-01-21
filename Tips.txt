@@ -8,3 +8,5 @@ fastapi dev
 run frontend w/ npm:
 npm run dev
 
+Helpful commands
+pip show <dependancy name> - Shows requirements and what its used by

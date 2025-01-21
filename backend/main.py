@@ -1,12 +1,15 @@
+import asyncio
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import requests
 import re
 from bs4 import BeautifulSoup
 from transformers import pipeline
+import httpx
+from dotenv import load_dotenv
 
+load_dotenv()
 app = FastAPI()
 
 class Item(BaseModel):
@@ -29,14 +32,69 @@ app.add_middleware(
 )
 
 
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+API_KEY = os.getenv("HF_API_KEY")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}"
+}
+
+async def summarize_text_async(text):
+    async with httpx.AsyncClient(timeout=100.0) as client:
+        payload = {
+            "inputs": text,
+            "parameters": {
+                "max_length": 130,
+                "min_length": 30,
+                "do_sample": False
+            }
+        }
+        try:
+            response = await client.post(API_URL, headers=headers, json=payload)
+            response.raise_for_status()  # Raises an HTTPError if response code is 4xx or 5xx
+            
+            json_response = response.json()
+            if isinstance(json_response, list) and 'summary_text' in json_response[0]:
+                return json_response[0]['summary_text']
+            else:
+                return "[Invalid response format]"
+        
+        except httpx.TimeoutException:
+            print("Request timed out. Retrying...")
+            await asyncio.sleep(10)  # Wait before retrying
+            return await summarize_text_async(text)
+        
+        except httpx.HTTPStatusError as e:
+            print(f"HTTP error: {e.response.status_code}")
+            return "[HTTP error encountered]"
+        
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return "[Unexpected error]"
+
+async def summarize_text_with_retry(text, max_retries=3):
+    for attempt in range(max_retries):
+        result = await summarize_text_async(text)
+        if result and "[Summary Error]" not in result:
+            return result
+        print(f"Retrying... ({attempt + 1}/{max_retries})")
+        await asyncio.sleep(10)  # Wait before retrying
+    return "[Failed after multiple retries]"
+
+
 @app.post("/summary/")
 async def summarize(request:Request):
 
     if request.type == 0:
         header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'}
 
-        response = requests.get(request.input, timeout=10, headers=header)
-
+        # response = requests.get(request.input, timeout=10, headers=header)
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(request.input, timeout=10, headers=header)
+                response.raise_for_status()
+            except httpx.HTTPError as e:
+                raise HTTPException(status_code=400, detail=f"Error fetching URL: {str(e)}")
         html = response.text
 
         soup = BeautifulSoup(html, "lxml")
@@ -54,14 +112,19 @@ async def summarize(request:Request):
         text = request.input
 
 
-    summarizer = pipeline(task='summarization', model="sshleifer/distilbart-cnn-12-6")
     l = 0
     r = 0
     summary = ""
     while r < len(text):
         r+=3600
-        res = summarizer(text[l:r], max_length=130,min_length=30,do_sample=False)
-        summary += res[0]['summary_text']
+
+        res = await summarize_text_with_retry(text[l:r])
+        
+        if res is not None:
+            summary += res + " "
+        else:
+            summary += " [Summary Error] "
+        
         l = r
         
     return {"summary": summary}

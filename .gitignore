@@ -1,5 +1,10 @@
 env/
 backend/__pycache__/
+.env
+backend/test.py
+backend/pipsize.py
+backend/requirements_backup.txt
+
 
 # Logs
 logs
