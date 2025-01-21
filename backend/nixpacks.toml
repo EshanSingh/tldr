@@ -1,6 +1,6 @@
 [phases.setup]
-nixPkgs = ["python310", "gcc", "python310Packages.pip"]
-cmds = ["pip install --upgrade pip", "pip install --no-cache-dir -r requirements.txt"]
+nixPkgs = ["python311", "gcc", "python311Packages.pip"]
+cmds = ["pip install --no-cache-dir -r requirements.txt"]
 
 [phases.build]
 cmds = []
