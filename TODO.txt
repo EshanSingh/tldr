@@ -1,15 +1,2 @@
-- Make page look pretty (add swiping animation)
-- implement backend summarization for Video?
-- Implement popup that displays error message for bad inputs (use modal)
-
-
-Maybe
-- 
-
-Ask:
-
-
-tensorboard==2.18.0
-tensorboard-data-server==0.7.2
-tensorflow-io-gcs-filesystem==0.31.0
-tensorflow_intel==2.18.0
+- Backend: Video summarization
+- Frontend: Swiping animation
