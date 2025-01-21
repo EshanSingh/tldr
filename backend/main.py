@@ -12,12 +12,6 @@ from dotenv import load_dotenv
 load_dotenv()
 app = FastAPI()
 
-class Item(BaseModel):
-    name: str
-    description: str | None = None
-    price: float
-    tax: float | None = None
-
 class Request(BaseModel):
     input: str
     type: int = 0
@@ -25,10 +19,10 @@ class Request(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173","https://eshan-tldr.vercel.app/"],  # React frontend origin (adjust if needed)
+    allow_origins=["http://localhost:5173", "https://eshan-tldr.vercel.app", "https://beautiful-education-production.up.railway.app"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
