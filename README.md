@@ -1,4 +1,4 @@
-# TLDR (Too Long Didn't Read)
+# [TLDR](https://tldr-eshan.vercel.app/) (Too Long Didn't Read)
 
 tldr: summarizes websites or any text you want, youtube in development
 
