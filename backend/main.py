@@ -19,7 +19,13 @@ class Request(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://eshan-tldr.vercel.app", "https://beautiful-education-production.up.railway.app"],
+   allow_origins=[
+        "http://localhost:5173",  # Local development
+        "https://tldr-eshan.vercel.app",  # Primary production URL
+        "https://tldr-eshan-eshans-projects-26b5c58e.vercel.app",  # Vercel environment-specific URL
+        "https://tldr-eshan-git-main-eshans-projects-26b5c58e.vercel.app",  # Vercel branch-specific URL
+        "https://beautiful-education-production.up.railway.app",  # Backend URL
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
